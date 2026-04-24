@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大數盃經典賽 — 問卷調查表單</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --brand: #1D9E75;
+    --brand-light: #E1F5EE;
+    --brand-dark: #085041;
+    --bg: #F8F9FA;
+    --surface: #FFFFFF;
+    --border: #E2E8F0;
+    --border-focus: #1D9E75;
+    --text: #1A202C;
+    --text-muted: #718096;
+    --text-hint: #A0AEC0;
+    --danger: #E53E3E;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .page-header {
+    max-width: 680px;
+    margin: 0 auto 2rem;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block;
+    background: var(--brand-light);
+    color: var(--brand-dark);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 4px 14px;
+    border-radius: 99px;
+    margin-bottom: 0.75rem;
+  }
+  .page-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  .page-header p {
+    font-size: 14px;
+    color: var(--text-muted);
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .form-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    max-width: 680px;
+    margin: 0 auto 1.5rem;
+    overflow: hidden;
+  }
+  .card-section-title {
+    background: var(--brand-light);
+    color: var(--brand-dark);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 20px;
+    letter-spacing: 0.03em;
+    border-bottom: 1px solid #9FE1CB;
+  }
+  .card-body { padding: 20px 24px; }
+
+  .field-group { margin-bottom: 20px; }
+  .field-group:last-child { margin-bottom: 0; }
+
+  label.field-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  label.field-label .required { color: var(--danger); margin-left: 2px; }
+  .field-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    margin-top: -2px;
+  }
+
+  input[type="text"], input[type="email"], input[type="tel"], select, textarea {
+    width: 100%;
+    padding: 9px 12px;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    outline: none;
+    transition: border-color 0.15s;
+    font-family: inherit;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(29,158,117,0.12);
+  }
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23718096' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 32px;
+  }
+
+  .radio-grid { display: grid; gap: 8px; grid-template-columns: 1fr; }
+  .radio-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+
+  .radio-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .radio-card:hover { border-color: var(--brand); background: var(--brand-light); }
+  .radio-card input[type="radio"], .radio-card input[type="checkbox"] {
+    width: auto;
+    margin-top: 2px;
+    flex-shrink: 0;
+    accent-color: var(--brand);
+  }
+  .radio-card.selected { border-color: var(--brand); background: var(--brand-light); }
+  .radio-label-main { font-size: 14px; font-weight: 500; color: var(--text); }
+  .radio-label-sub { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+
+  .school-entries { display: flex; flex-direction: column; gap: 12px; }
+  .school-entry {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    background: #FAFBFC;
+    position: relative;
+  }
+  .entry-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .entry-row:last-child { margin-bottom: 0; }
+  .entry-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .remove-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: var(--text-hint);
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: color 0.1s, background 0.1s;
+  }
+  .remove-btn:hover { color: var(--danger); background: #FFF5F5; }
+  .add-school-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 10px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--brand-dark);
+    background: var(--brand-light);
+    border: 1px dashed #5DCAA5;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background 0.15s;
+    width: 100%;
+    justify-content: center;
+  }
+  .add-school-btn:hover { background: #c4eed9; }
+
+  .range-wrap { display: flex; align-items: center; gap: 12px; }
+  .range-wrap input[type="range"] { flex: 1; accent-color: var(--brand); }
+  .range-value {
+    min-width: 42px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--brand-dark);
+    background: var(--brand-light);
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+  }
+
+  .other-input-wrap { margin-top: 8px; display: none; }
+  .other-input-wrap.visible { display: block; }
+
+  /* ── Submit button ── */
+  .submit-wrap { max-width: 680px; margin: 0 auto; text-align: center; }
+  .submit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 40px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--brand);
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    font-family: inherit;
+  }
+  .submit-btn:hover { background: #178a62; }
+  .submit-btn:active { transform: scale(0.98); }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  /* ── Confirmation page ── */
+  .confirm-page {
+    display: none;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  .confirm-page.visible { display: block; }
+  .confirm-header {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  .confirm-header h2 { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+  .confirm-header p { font-size: 14px; color: var(--text-muted); }
+  .confirm-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #FFF8E1;
+    border: 1px solid #F6CC6A;
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #7A5900;
+    margin-bottom: 1.5rem;
+  }
+  .confirm-alert svg { flex-shrink: 0; margin-top: 1px; }
+
+  .confirm-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+    overflow: hidden;
+  }
+  .confirm-card-title {
+    background: var(--brand-light);
+    color: var(--brand-dark);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-bottom: 1px solid #9FE1CB;
+    letter-spacing: 0.03em;
+  }
+  .confirm-rows { padding: 4px 0; }
+  .confirm-row {
+    display: flex;
+    gap: 12px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    align-items: flex-start;
+  }
+  .confirm-row:last-child { border-bottom: none; }
+  .confirm-row-label {
+    flex-shrink: 0;
+    width: 120px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    padding-top: 1px;
+  }
+  .confirm-row-value { color: var(--text); flex: 1; }
+  .confirm-row-value.empty { color: var(--text-hint); font-style: italic; }
+
+  .school-block {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .school-block:last-child { border-bottom: none; }
+  .school-block-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .school-block-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 12px;
+    font-size: 13px;
+  }
+  .school-block-item span:first-child {
+    color: var(--text-hint);
+    font-size: 11px;
+    display: block;
+  }
+
+  .confirm-actions {
+    display: flex;
+    gap: 12px;
+    max-width: 680px;
+    margin: 1.5rem auto 0;
+    justify-content: center;
+  }
+  .btn-back {
+    padding: 12px 28px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-family: inherit;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .btn-back:hover { border-color: var(--brand); color: var(--brand-dark); }
+  .btn-final-submit {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 32px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--brand);
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s, transform 0.1s;
+  }
+  .btn-final-submit:hover { background: #178a62; }
+  .btn-final-submit:active { transform: scale(0.98); }
+  .btn-final-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  /* ── Success page ── */
+  .success-card {
+    display: none;
+    max-width: 680px;
+    margin: 0 auto;
+    background: var(--surface);
+    border: 1px solid #9FE1CB;
+    border-radius: var(--radius);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+  .success-card.visible { display: block; }
+  .success-icon {
+    width: 56px;
+    height: 56px;
+    background: var(--brand-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    color: var(--brand);
+  }
+  .success-card h2 { font-size: 20px; font-weight: 700; margin-bottom: 0.5rem; }
+  .success-card p { font-size: 14px; color: var(--text-muted); }
+
+  @media (max-width: 520px) {
+    .entry-row { grid-template-columns: 1fr; }
+    .radio-grid.cols-2 { grid-template-columns: 1fr; }
+    .card-body { padding: 16px; }
+    .confirm-row-label { width: 90px; }
+    .school-block-grid { grid-template-columns: 1fr; }
+    .confirm-actions { flex-direction: column; }
+    .btn-back, .btn-final-submit { width: 100%; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="badge">問卷調查</div>
+  <h1>大數盃經典賽</h1>
+  <p>感謝您撥冗填寫本問卷，您的意見將影響賽事的籌備方向。</p>
+</div>
+
+<div style="max-width:680px;margin:0 auto 2rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;">
+  <div style="background:var(--brand-light);border-bottom:1px solid #9FE1CB;padding:10px 20px;font-size:13px;font-weight:600;color:var(--brand-dark);letter-spacing:0.03em;">籌辦緣起</div>
+  <div style="padding:20px 24px;font-size:14px;line-height:1.8;color:var(--text);">
+    <p style="margin-bottom:1rem;">各位數學系壘的賢拜以及學弟妹好，有鑑於近年來大專慢壘系隊的參與人數衰減迅速，大Ｘ盃壘球項目也陸續停辦或合併，大數盃這兩三年採取資格放寬的方式勉強維持隊伍數量（目前仍有 10 隊），不過當中 4 隊的現役人數低於 10 人，顯示系隊在招生或經營確實有其困難之處。小弟想藉由舉辦「大數盃經典賽」之賽事，希望能恢復數學慢壘系隊的榮景，以下是這項盃賽的特色以及所對應的用意：</p>
+    <ol style="padding-left:1.25rem;display:flex;flex-direction:column;gap:12px;">
+      <li>
+        <span style="font-weight:500;">採現役＋傭兵（5＋5）的方式組隊，現役資格放寬（如數學系畢業 7 年以內），傭兵包含「數學系畢業超過 n 年的 OB」以及「外系之在學學生」</span><br>
+        <span style="color:var(--text-muted);font-size:13px;">→ 組隊方式更自由，每校可以組出多支球隊，也能提高盃賽強度，讓畢業後的學長能重溫競技的熱血，也能讓在學的學弟妹在高強度的比賽中成長</span>
+      </li>
+      <li>
+        <span style="font-weight:500;">提升比賽品質，加入個人紀錄、獎項，並聘請攝影師紀錄比賽精采瞬間</span><br>
+        <span style="color:var(--text-muted);font-size:13px;">→ 相信每位球友打球時都有一份榮譽心，以及想要展現帥帥的姿態，希望能藉由周邊配套的提升，讓大家更有打球的衝勁</span>
+      </li>
+      <li>
+        <span style="font-weight:500;">盃賽常態化，成為每年固定賽事</span><br>
+        <span style="color:var(--text-muted);font-size:13px;">→ 由於現役大數盃每年由不同學校輪替，每屆的比賽幾乎沒有銜接性，如果能固定籌備團隊，對於盃賽的延續與進步都有正面效益</span>
+      </li>
+      <li>
+        <span style="font-weight:500;">除了競技組之外，另設聯誼組</span><br>
+        <span style="color:var(--text-muted);font-size:13px;">→ 部分學校的實力落差甚大，且球隊經營方式以俱樂部性質為主，希望可以藉由分組讓大家都能開心打球</span>
+      </li>
+    </ol>
+  </div>
+</div>
+
+<!-- ══════════════ 填寫表單 ══════════════ -->
+<form id="survey-form">
+
+  <div class="form-card">
+    <div class="card-section-title">基本資料</div>
+    <div class="card-body">
+      <div class="field-group">
+        <label class="field-label">1. 姓名 <span class="required">*</span></label>
+        <input type="text" id="q1_name" placeholder="請輸入您的姓名" required>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="card-section-title">就讀/畢業校系</div>
+    <div class="card-body">
+      <div class="field-group">
+        <label class="field-label">2. 現在 or 曾經就讀（職）的校系 <span class="required">*</span></label>
+        <div class="field-hint">盡可能完整填寫所有學校經歷；若學校或科系不在選單中，請選「其它」後自行輸入。</div>
+        <div class="school-entries" id="school-entries"></div>
+        <button type="button" class="add-school-btn" onclick="addSchoolEntry()">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="1" x2="7" y2="13"/><line x1="1" y1="7" x2="13" y2="7"/></svg>
+          新增一筆學校資料
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="card-section-title">組隊制度</div>
+    <div class="card-body">
+      <div class="field-group">
+        <label class="field-label">3. 希望的組隊制度為何？ <span class="required">*</span></label>
+        <div class="radio-grid" id="q3_mode">
+          <label class="radio-card" onclick="selectRadio(this);onQ3ModeChange()">
+            <input type="radio" name="q3_mode" value="現役+OB(5+5)_畢業年數">
+            <div>
+              <div class="radio-label-main">現役＋傭兵（5＋5），畢業 N 年以內算現役</div>
+              <div class="radio-label-sub">依畢業年數區分現役資格</div>
+            </div>
+          </label>
+          <label class="radio-card" onclick="selectRadio(this);onQ3ModeChange()">
+            <input type="radio" name="q3_mode" value="現役+OB(5+5)_年齡">
+            <div>
+              <div class="radio-label-main">現役＋傭兵（5＋5），年齡 N 歲以下算現役</div>
+              <div class="radio-label-sub">依年齡區分現役資格</div>
+            </div>
+          </label>
+          <label class="radio-card" onclick="selectRadio(this);onQ3ModeChange()">
+            <input type="radio" name="q3_mode" value="完全不區分_自由組隊">
+            <div>
+              <div class="radio-label-main">不區分現役或 OB，僅限制外系人數</div>
+              <div class="radio-label-sub">放寬身分限制</div>
+            </div>
+          </label>
+          <label class="radio-card" onclick="selectRadio(this);onQ3ModeChange()">
+            <input type="radio" name="q3_mode" value="其他">
+            <div>
+              <div class="radio-label-main">其他意見</div>
+              <div class="radio-label-sub">請輸入您的想法</div>
+            </div>
+          </label>
+        </div>
+      </div>
+      <div id="q3_stage2_years" class="other-input-wrap" style="margin-top:16px;">
+        <label class="field-label" style="font-size:13px;">畢業幾年以內算現役？</label>
+        <div class="field-hint">0 = 僅限在學</div>
+        <div class="range-wrap">
+          <span style="font-size:12px;color:var(--text-muted);">0 年</span>
+          <input type="range" id="q3_range_years" min="0" max="20" value="3" step="1"
+            oninput="updateRange(this,'q3_val_years', v => v+'年')">
+          <span style="font-size:12px;color:var(--text-muted);">20 年</span>
+          <div class="range-value" id="q3_val_years">3年</div>
+        </div>
+      </div>
+      <div id="q3_stage2_age" class="other-input-wrap" style="margin-top:16px;">
+        <label class="field-label" style="font-size:13px;">幾歲以下算現役？</label>
+        <div class="range-wrap">
+          <span style="font-size:12px;color:var(--text-muted);">22 歲</span>
+          <input type="range" id="q3_range_age" min="22" max="40" value="28" step="1"
+            oninput="updateRange(this,'q3_val_age', v => v+'歲')">
+          <span style="font-size:12px;color:var(--text-muted);">40 歲</span>
+          <div class="range-value" id="q3_val_age">28歲</div>
+        </div>
+      </div>
+      <div id="q3_stage2_other" class="other-input-wrap" style="margin-top:16px;">
+        <textarea id="q3_other_text" placeholder="請說明您對於組隊制度的其他看法…" rows="3" style="resize:vertical;"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="card-section-title">球棒與用球標準</div>
+    <div class="card-body">
+      <div class="field-group">
+        <label class="field-label">4. 球棒與用球應採用什麼標準？ <span class="required">*</span></label>
+        <div class="radio-grid" id="q4_bat">
+          <label class="radio-card" onclick="selectRadio(this)">
+            <input type="radio" name="q4_bat" value="不限棒+低彈性用球">
+            <div>
+              <div class="radio-label-main">不限棒 ＋ 低彈性係數用球（建議選項）</div>
+              <div class="radio-label-sub">球棒入手較便宜，約 3,000–5,000 元</div>
+            </div>
+          </label>
+          <label class="radio-card" onclick="selectRadio(this)">
+            <input type="radio" name="q4_bat" value="USSSA+稍低彈性用球">
+            <div>
+              <div class="radio-label-main">USSSA ＋ 彈性係數稍低的用球</div>
+              <div class="radio-label-sub">中階球棒標準</div>
+            </div>
+          </label>
+          <label class="radio-card" onclick="selectRadio(this)">
+            <input type="radio" name="q4_bat" value="ASA/USA認證+高彈性用球">
+            <div>
+              <div class="radio-label-main">ASA/USA 認證 ＋ 高彈性係數用球（傳統比賽選項）</div>
+              <div class="radio-label-sub">球棒動輒 8,000 元至破萬</div>
+            </div>
+          </label>
+          <label class="radio-card" onclick="selectRadio(this)">
+            <input type="radio" name="q4_bat" value="其他意見">
+            <div>
+              <div class="radio-label-main">其他意見</div>
+              <div class="radio-label-sub">請輸入您的想法</div>
+            </div>
+          </label>
+        </div>
+        <div id="q4_bat_other" class="other-input-wrap" style="margin-top:10px;">
+          <textarea id="q4_bat_other_text" placeholder="請說明您對球棒與用球標準的其他看法…" rows="2" style="resize:vertical;"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="card-section-title">球賽規格與費用意願</div>
+    <div class="card-body">
+      <div class="field-group">
+        <label class="field-label">5. 希望的球賽規格為何？ <span class="required">*</span></label>
+        <div class="field-hint">現行大數盃每隊報名費約 5,500–6,000 元。</div>
+        <div class="radio-grid" id="q5_tier">
+          <label class="radio-card" onclick="selectRadio(this)">
+            <input type="radio" name="q5_tier" value="基礎型（報名費約4000內）">
+            <div>
+              <div class="radio-label-main">基礎型</div>
+              <div class="radio-label-sub">最基本球賽，報名費約 4,000 元以內</div>
+            </div>
+          </label>
+          <label class="radio-card" onclick="selectRadio(this)">
+            <input type="radio" name="q5_tier" value="進階型（報名費約5000-6000）">
+            <div>
+              <div class="radio-label-main">進階型</div>
+              <div class="radio-label-sub">有個人紀錄＋個人獎項，報名費約 5,000–6,000 元</div>
+            </div>
+          </label>
+          <label class="radio-card" onclick="selectRadio(this)">
+            <input type="radio" name="q5_tier" value="精緻型（報名費約6000-8000）">
+            <div>
+              <div class="radio-label-main">精緻型</div>
+              <div class="radio-label-sub">紀錄＋獎項＋比賽攝影＋周邊商品，報名費約 6,000–8,000 元</div>
+            </div>
+          </label>
+          <label class="radio-card" onclick="selectRadio(this)">
+            <input type="radio" name="q5_tier" value="頂規型（報名費約8000-10000）">
+            <div>
+              <div class="radio-label-main">頂規型</div>
+              <div class="radio-label-sub">精緻型全項目＋場場錄影＋完整球員資料庫，報名費約 8,000–10,000 元</div>
+            </div>
+          </label>
+          <label class="radio-card" onclick="selectRadio(this)">
+            <input type="radio" name="q5_tier" value="其他意見">
+            <div>
+              <div class="radio-label-main">其他意見</div>
+              <div class="radio-label-sub">請輸入您的想法</div>
+            </div>
+          </label>
+        </div>
+        <div id="q5_tier_other" class="other-input-wrap" style="margin-top:10px;">
+          <textarea id="q5_tier_other_text" placeholder="請說明您希望球賽還需要具備什麼元素…" rows="2" style="resize:vertical;"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="card-section-title">賽程安排</div>
+    <div class="card-body">
+      <div class="field-group">
+        <label class="field-label">6. 希望的比賽安排方式？ <span class="required">*</span></label>
+        <div class="radio-grid cols-2" id="q6_schedule">
+          <label class="radio-card" onclick="selectRadio(this)">
+            <input type="radio" name="q6_schedule" value="一日完賽（週六）">
+            <div><div class="radio-label-main">一日完賽（週六）</div></div>
+          </label>
+          <label class="radio-card" onclick="selectRadio(this)">
+            <input type="radio" name="q6_schedule" value="一日完賽（週日）">
+            <div><div class="radio-label-main">一日完賽（週日）</div></div>
+          </label>
+          <label class="radio-card" onclick="selectRadio(this)">
+            <input type="radio" name="q6_schedule" value="兩日完賽（同周末）">
+            <div><div class="radio-label-main">兩日完賽（同個周末）</div></div>
+          </label>
+          <label class="radio-card" onclick="selectRadio(this)">
+            <input type="radio" name="q6_schedule" value="兩日完賽（預賽複賽分兩周末）">
+            <div><div class="radio-label-main">兩日完賽（預賽＋複賽分兩個周末）</div></div>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="submit-wrap">
+    <button type="submit" class="submit-btn">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8h12M8 2l6 6-6 6"/></svg>
+      下一步：確認填寫內容
+    </button>
+    <p style="font-size:12px;color:var(--text-hint);margin-top:12px;">送出前可以再次確認所有填寫內容</p>
+  </div>
+
+</form>
+
+<!-- ══════════════ 確認頁面 ══════════════ -->
+<div class="confirm-page" id="confirm-page">
+
+  <div class="confirm-header">
+    <h2>確認填寫內容</h2>
+    <p>請仔細核對以下資訊，確認無誤後再送出。</p>
+  </div>
+
+  <div class="confirm-alert">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#B47B00" stroke-width="1.5"><circle cx="8" cy="8" r="7"/><line x1="8" y1="5" x2="8" y2="8.5"/><circle cx="8" cy="11" r="0.6" fill="#B47B00"/></svg>
+    資料送出後將無法修改。如需更改，請點左下方「返回修改」。
+  </div>
+
+  <div class="confirm-card" id="confirm-basic"></div>
+  <div class="confirm-card" id="confirm-schools"></div>
+  <div class="confirm-card" id="confirm-team"></div>
+  <div class="confirm-card" id="confirm-bat"></div>
+  <div class="confirm-card" id="confirm-tier"></div>
+  <div class="confirm-card" id="confirm-schedule"></div>
+
+  <div class="confirm-actions">
+    <button type="button" class="btn-back" onclick="goBack()">
+      ← 返回修改
+    </button>
+    <button type="button" class="btn-final-submit" id="final-submit-btn" onclick="finalSubmit()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2 8 6 12 14 4"/></svg>
+      確認送出
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════ 成功畫面 ══════════════ -->
+<div class="success-card" id="success-card">
+  <div class="success-icon">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="4 12 9 17 20 7"/></svg>
+  </div>
+  <h2>感謝您的填寫！</h2>
+  <p>您的意見已成功送出，將成為大數盃經典賽籌備的重要參考。</p>
+  <p style="margin-top:0.5rem;font-size:12px;color:var(--text-hint);">填寫者：<span id="success-name"></span></p>
+</div>
+
+<script>
+const SCHOOLS = {
+  "國立清華大學": ["數學系","統計與數據科學研究所","計算與建模科學研究所","理學院學士班","其它"],
+  "國立臺灣大學": ["數學系","應用數學科學研究所","統計與數據科學研究所","其它"],
+  "國立臺灣師範大學": ["數學系","其它"],
+  "國立成功大學": ["數學系","統計學系","統計與資料科學研究所","數據科學研究所","其它"],
+  "國立中興大學": ["應用數學系","統計學研究所","資料科學與資訊計算研究所","大數據產學研發博士學位學程","其它"],
+  "國立陽明交通大學": ["應用數學系","統計學研究所","其它"],
+  "國立中央大學": ["數學系","統計研究所","理學院學士班","其它"],
+  "國立中正大學": ["數學系","其它"],
+  "國立高雄師範大學": ["數學系","其它"],
+  "國立彰化師範大學": ["數學系","統計資訊研究所","其它"],
+  "國立高雄大學": ["應用數學系","統計學研究所","其它"],
+  "國立臺中教育大學": ["數學教育學系","其它"],
+  "東海大學": ["數學系","應用數學系","智慧計算暨應用數學系","統計學系","其它"],
+  "輔仁大學": ["數學系","統計資訊學系","其它"],
+  "中原大學": ["應用數學系","其它"],
+  "逢甲大學": ["應用數學系","統計學系","數據科學碩士學位學程","其它"],
+  "靜宜大學": ["應用數學系","財務工程學系","資料科學暨大數據分析與應用學系","其它"],
+  "其它": ["其它"]
+};
+const DEGREES = ["學士班","碩士班","博士班","教職員","在職專班","其它"];
+let entryCount = 0;
+let pendingData = null;
+
+function buildSchoolOptions(selected) {
+  let opts = '<option value="">— 選擇學校 —</option>';
+  Object.keys(SCHOOLS).forEach(s => {
+    opts += `<option value="${s}"${selected===s?' selected':''}>${s}</option>`;
+  });
+  return opts;
+}
+
+function buildDeptOptions(school, selected) {
+  const depts = SCHOOLS[school] || [];
+  let opts = '<option value="">— 選擇科系 —</option>';
+  depts.forEach(d => {
+    opts += `<option value="${d}"${selected===d?' selected':''}>${d}</option>`;
+  });
+  return opts;
+}
+
+function addSchoolEntry(school='', dept='', degree='', status='', year='') {
+  entryCount++;
+  const id = entryCount;
+  const container = document.getElementById('school-entries');
+  const div = document.createElement('div');
+  div.className = 'school-entry';
+  div.id = 'entry-' + id;
+  div.innerHTML = `
+    ${id > 1 ? `<button type="button" class="remove-btn" onclick="removeEntry(${id})" title="移除">✕</button>` : ''}
+    <div class="entry-row">
+      <div>
+        <div class="entry-label">學校</div>
+        <select id="school_${id}" onchange="onSchoolChange(${id})">${buildSchoolOptions(school)}</select>
+      </div>
+      <div>
+        <div class="entry-label">科系</div>
+        <select id="dept_${id}">${buildDeptOptions(school, dept)}</select>
+      </div>
+    </div>
+    <div id="other_school_wrap_${id}" class="other-input-wrap${school==='其它'?' visible':''}">
+      <div class="entry-label">請輸入學校名稱</div>
+      <input type="text" id="other_school_${id}" placeholder="學校名稱" value="">
+    </div>
+    <div id="other_dept_wrap_${id}" class="other-input-wrap${dept==='其它'?' visible':''}">
+      <div class="entry-label">請輸入科系名稱</div>
+      <input type="text" id="other_dept_${id}" placeholder="科系名稱" value="">
+    </div>
+    <div class="entry-row">
+      <div>
+        <div class="entry-label">學位/職位</div>
+        <select id="degree_${id}">
+          <option value="">— 選擇 —</option>
+          ${DEGREES.map(d=>`<option value="${d}"${degree===d?' selected':''}>${d}</option>`).join('')}
+        </select>
+      </div>
+      <div>
+        <div class="entry-label">在學或畢業？</div>
+        <div style="display:flex;gap:8px;margin-top:2px;">
+          <label style="display:flex;align-items:center;gap:5px;font-size:13px;cursor:pointer;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);flex:1;justify-content:center;">
+            <input type="radio" name="status_${id}" value="在學（職）" onchange="onStatusChange(${id})" style="width:auto;accent-color:var(--brand);" ${status==='在學（職）'?'checked':''}>
+            在學（職）
+          </label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:13px;cursor:pointer;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);flex:1;justify-content:center;">
+            <input type="radio" name="status_${id}" value="畢（肄）業/離職" onchange="onStatusChange(${id})" style="width:auto;accent-color:var(--brand);" ${status==='畢（肄）業/離職'?'checked':''}>
+            畢（肄）業/離職
+          </label>
+        </div>
+      </div>
+    </div>
+    <div id="year_enrolled_wrap_${id}" class="other-input-wrap${status==='在學（職）'?' visible':''}">
+      <div class="entry-label">入學年份/入職年份</div>
+      <input type="text" id="year_enrolled_${id}" placeholder="例：2022" value="${status==='在學（職）'?year:''}">
+    </div>
+    <div id="year_grad_wrap_${id}" class="other-input-wrap${status==='畢（肄）業/離職'?' visible':''}">
+      <div class="entry-label">畢業年份/最後就讀年份/離職年份</div>
+      <input type="text" id="year_grad_${id}" placeholder="例：2024" value="${status==='畢（肄）業/離職'?year:''}">
+    </div>
+  `;
+  container.appendChild(div);
+  document.getElementById('dept_'+id).addEventListener('change', function() {
+    const wrap = document.getElementById('other_dept_wrap_'+id);
+    wrap.classList.toggle('visible', this.value === '其它');
+  });
+}
+
+function onStatusChange(id) {
+  const val = document.querySelector(`input[name="status_${id}"]:checked`);
+  if (!val) return;
+  document.getElementById('year_enrolled_wrap_'+id).classList.toggle('visible', val.value === '在學（職）');
+  document.getElementById('year_grad_wrap_'+id).classList.toggle('visible', val.value === '畢（肄）業/離職');
+}
+
+function onSchoolChange(id) {
+  const schoolSel = document.getElementById('school_'+id);
+  const school = schoolSel.value;
+  document.getElementById('dept_'+id).innerHTML = buildDeptOptions(school, '');
+  document.getElementById('other_school_wrap_'+id).classList.toggle('visible', school === '其它');
+  document.getElementById('other_dept_wrap_'+id).classList.remove('visible');
+}
+
+function removeEntry(id) {
+  const el = document.getElementById('entry-'+id);
+  if (el) el.remove();
+}
+
+function updateRange(input, outputId, fmt) {
+  document.getElementById(outputId).textContent = fmt(parseInt(input.value));
+}
+
+function selectRadio(card) {
+  const name = card.querySelector('input').name;
+  document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+    r.closest('.radio-card').classList.remove('selected');
+  });
+  card.classList.add('selected');
+  card.querySelector('input').checked = true;
+  if (name === 'q4_bat') {
+    document.getElementById('q4_bat_other').classList.toggle('visible', card.querySelector('input').value === '其他意見');
+  }
+  if (name === 'q5_tier') {
+    document.getElementById('q5_tier_other').classList.toggle('visible', card.querySelector('input').value === '其他意見');
+  }
+}
+
+function onQ3ModeChange() {
+  const val = (document.querySelector('input[name="q3_mode"]:checked')||{}).value || '';
+  document.getElementById('q3_stage2_years').classList.toggle('visible', val === '現役+OB(5+5)_畢業年數');
+  document.getElementById('q3_stage2_age').classList.toggle('visible', val === '現役+OB(5+5)_年齡');
+  document.getElementById('q3_stage2_other').classList.toggle('visible', val === '其他');
+}
+
+function collectData() {
+  const entries = [];
+  document.querySelectorAll('.school-entry').forEach(entry => {
+    const id = entry.id.replace('entry-','');
+    const schoolSel = document.getElementById('school_'+id);
+    const deptSel = document.getElementById('dept_'+id);
+    const otherSchool = document.getElementById('other_school_'+id);
+    const otherDept = document.getElementById('other_dept_'+id);
+    const statusEl = document.querySelector(`input[name="status_${id}"]:checked`);
+    const statusVal = statusEl ? statusEl.value : '';
+    let yearVal = '';
+    if (statusVal === '在學（職）') yearVal = (document.getElementById('year_enrolled_'+id)||{}).value || '';
+    else if (statusVal === '畢（肄）業/離職') yearVal = (document.getElementById('year_grad_'+id)||{}).value || '';
+    entries.push({
+      school: schoolSel && schoolSel.value === '其它' && otherSchool ? otherSchool.value : (schoolSel ? schoolSel.value : ''),
+      dept: deptSel && deptSel.value === '其它' && otherDept ? otherDept.value : (deptSel ? deptSel.value : ''),
+      degree: (document.getElementById('degree_'+id)||{}).value || '',
+      status: statusVal,
+      year: yearVal
+    });
+  });
+  const q3mode = (document.querySelector('input[name="q3_mode"]:checked')||{}).value || '';
+  let veteran_setting = '';
+  if (q3mode === '現役+OB(5+5)_畢業年數') veteran_setting = '畢業年數制：' + parseInt(document.getElementById('q3_range_years').value) + '年以內';
+  else if (q3mode === '現役+OB(5+5)_年齡') veteran_setting = '年齡制：' + parseInt(document.getElementById('q3_range_age').value) + '歲以下';
+  else if (q3mode === '完全不區分_自由組隊') veteran_setting = '不區分現役或 OB，僅限制外系人數';
+  else if (q3mode === '其他') veteran_setting = '其他：' + (document.getElementById('q3_other_text').value.trim() || '（未填）');
+  const batVal = (document.querySelector('input[name="q4_bat"]:checked')||{}).value || '';
+  const tierVal = (document.querySelector('input[name="q5_tier"]:checked')||{}).value || '';
+  return {
+    name: document.getElementById('q1_name').value.trim(),
+    schools: entries,
+    team_format: q3mode,
+    veteran_setting: veteran_setting,
+    bat_standard: batVal,
+    bat_other: batVal === '其他意見' ? (document.getElementById('q4_bat_other_text')||{}).value || '' : '',
+    tier: tierVal,
+    tier_other: tierVal === '其他意見' ? (document.getElementById('q5_tier_other_text')||{}).value || '' : '',
+    schedule: (document.querySelector('input[name="q6_schedule"]:checked')||{}).value || '',
+    submitted_at: new Date().toLocaleString('zh-TW')
+  };
+}
+
+/* ── helpers ── */
+function val(v) {
+  if (!v) return '<span class="confirm-row-value empty">（未填）</span>';
+  return `<span class="confirm-row-value">${v}</span>`;
+}
+function row(label, value) {
+  const isEmpty = !value;
+  return `<div class="confirm-row"><div class="confirm-row-label">${label}</div>${isEmpty ? '<span class="confirm-row-value empty">（未填）</span>' : `<span class="confirm-row-value">${value}</span>`}</div>`;
+}
+function card(titleText, innerHtml) {
+  return `<div class="confirm-card-title">${titleText}</div><div class="confirm-rows">${innerHtml}</div>`;
+}
+
+function buildConfirmPage(data) {
+  /* 基本資料 */
+  document.getElementById('confirm-basic').innerHTML = card('基本資料', row('姓名', data.name));
+
+  /* 校系 */
+  let schoolsHtml = '';
+  data.schools.forEach((s, i) => {
+    schoolsHtml += `<div class="school-block">
+      <div class="school-block-title">第 ${i+1} 筆</div>
+      <div class="school-block-grid">
+        <div class="school-block-item"><span>學校</span>${s.school || '（未填）'}</div>
+        <div class="school-block-item"><span>科系</span>${s.dept || '（未填）'}</div>
+        <div class="school-block-item"><span>學位／職位</span>${s.degree || '（未填）'}</div>
+        <div class="school-block-item"><span>在學／畢業</span>${s.status || '（未填）'}</div>
+        <div class="school-block-item"><span>年份</span>${s.year || '（未填）'}</div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('confirm-schools').innerHTML = `<div class="confirm-card-title">就讀／畢業校系</div>${schoolsHtml}`;
+
+  /* 組隊制度 */
+  const teamLabel = {
+    '現役+OB(5+5)_畢業年數': '現役＋傭兵（5＋5），依畢業年數',
+    '現役+OB(5+5)_年齡': '現役＋傭兵（5＋5），依年齡',
+    '完全不區分_自由組隊': '不區分現役或 OB，僅限制外系人數',
+    '其他': '其他意見'
+  }[data.team_format] || data.team_format;
+  document.getElementById('confirm-team').innerHTML = card('組隊制度',
+    row('制度選擇', teamLabel) +
+    row('詳細設定', data.veteran_setting)
+  );
+
+  /* 球棒 */
+  document.getElementById('confirm-bat').innerHTML = card('球棒與用球標準',
+    row('選擇', data.bat_standard) +
+    (data.bat_other ? row('補充說明', data.bat_other) : '')
+  );
+
+  /* 球賽規格 */
+  document.getElementById('confirm-tier').innerHTML = card('球賽規格與費用意願',
+    row('選擇', data.tier) +
+    (data.tier_other ? row('補充說明', data.tier_other) : '')
+  );
+
+  /* 賽程 */
+  document.getElementById('confirm-schedule').innerHTML = card('賽程安排', row('安排方式', data.schedule));
+}
+
+/* ── 表單送出 → 進入確認頁 ── */
+document.getElementById('survey-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const data = collectData();
+  if (!data.name) { alert('請填寫姓名'); return; }
+  if (!data.team_format) { alert('請選擇組隊制度（第3題）'); return; }
+  if (!data.bat_standard) { alert('請選擇球棒與用球標準（第4題）'); return; }
+  if (!data.tier) { alert('請選擇希望的球賽規格（第5題）'); return; }
+  if (!data.schedule) { alert('請選擇比賽安排方式（第6題）'); return; }
+
+  pendingData = data;
+  buildConfirmPage(data);
+
+  document.getElementById('survey-form').style.display = 'none';
+  document.getElementById('confirm-page').classList.add('visible');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+/* ── 返回修改 ── */
+function goBack() {
+  document.getElementById('confirm-page').classList.remove('visible');
+  document.getElementById('survey-form').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ── 最終送出 ── */
+function finalSubmit() {
+  if (!pendingData) return;
+  const btn = document.getElementById('final-submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="7" cy="7" r="5" stroke-dasharray="20" stroke-dashoffset="5"/></svg> 送出中…';
+
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbytcJbBHzstlMiSKVdH39TDT43981nhikZZd-bRUDCY4G5swIdJKcPnHWFa7bNjonuB/exec";
+
+  fetch(GAS_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(pendingData)
+  })
+  .then(() => {
+    document.getElementById('confirm-page').classList.remove('visible');
+    const sc = document.getElementById('success-card');
+    sc.classList.add('visible');
+    document.getElementById('success-name').textContent = pendingData.name;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  })
+  .catch(err => {
+    btn.disabled = false;
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2 8 6 12 14 4"/></svg> 確認送出';
+    alert('送出失敗，請檢查網路後再試一次。\n(' + err.message + ')');
+  });
+}
+
+addSchoolEntry();
+</script>
+</body>
+</html>
