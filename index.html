@@ -471,6 +471,7 @@
     <div class="card-body">
       <div class="field-group">
         <label class="field-label">3. 希望的組隊制度為何？ <span class="required">*</span></label>
+        <div class="field-hint"> 目前大數盃：現役＋傭兵（8＋2），人數少另有條款；OB 大數盃：現役、OB 皆可參與，無任何限制。</div>
         <div class="radio-grid" id="q3_mode">
           <label class="radio-card" onclick="selectRadio(this);onQ3ModeChange()">
             <input type="radio" name="q3_mode" value="現役+OB(5+5)_畢業年數">
@@ -534,6 +535,7 @@
     <div class="card-body">
       <div class="field-group">
         <label class="field-label">4. 球棒與用球應採用什麼標準？ <span class="required">*</span></label>
+        <div class="field-hint">目前大數盃：ASA/USA 不限高；OB 大數盃：木棒限高。</div>
         <div class="radio-grid" id="q4_bat">
           <label class="radio-card" onclick="selectRadio(this)">
             <input type="radio" name="q4_bat" value="不限棒+低彈性用球">
@@ -576,7 +578,7 @@
     <div class="card-body">
       <div class="field-group">
         <label class="field-label">5. 希望的球賽規格為何？ <span class="required">*</span></label>
-        <div class="field-hint">現行大數盃每隊報名費約 5,500–6,000 元。</div>
+        <div class="field-hint">先以項目為首要選擇考量，費用僅供參考，會隨隊數與其他原因變動。目前大數盃每隊報名費約 5,500–6,000 元。</div>
         <div class="radio-grid" id="q5_tier">
           <label class="radio-card" onclick="selectRadio(this)">
             <input type="radio" name="q5_tier" value="基礎型（報名費約4000內）">
@@ -701,7 +703,7 @@
 
 <script>
 const SCHOOLS = {
-  "國立清華大學": ["數學系","統計與數據科學研究所","計算與建模科學研究所","理學院學士班","其它"],
+  "國立清華大學": ["數學系","統計與數據科學研究所","計算與建模科學研究所","數理教育研究所","理學院學士班","其它"],
   "國立臺灣大學": ["數學系","應用數學科學研究所","統計與數據科學研究所","其它"],
   "國立臺灣師範大學": ["數學系","其它"],
   "國立成功大學": ["數學系","統計學系","統計與資料科學研究所","數據科學研究所","其它"],
